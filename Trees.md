@@ -28,7 +28,7 @@ ALGORITHM preOrder(root)
       preOrder(root.right)
 ```
 
-- In-order: `left >> root >> right`
+**In-order:** `left >> root >> right`
 ```
 ALGORITHM inOrder(node)
 // INPUT <-- root node
@@ -43,7 +43,7 @@ ALGORITHM inOrder(node)
         inOrder(node.right)
 ```
 
-- Post-order: `left >> right >> root`
+**Post-order:** `left >> right >> root`
 ```
 ALGORITHM postOrder(node)
 // INPUT <-- root node
