@@ -1,8 +1,8 @@
 # Component Based UI
 
-Classes and Functions are used to classify functionality
-Require what is needed 
-Render it where it is needed
+- Classes and Functions are used to classify functionality
+- Require what is needed 
+- Render it where it is needed
 
 
 ```
@@ -15,7 +15,9 @@ const element = () => {
     </h1>
   }
 );
+```
 Behind the scenes…
+```
 
 const element = React.createElement(
   'h1',
