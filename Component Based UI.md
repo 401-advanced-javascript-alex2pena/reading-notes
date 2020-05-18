@@ -25,11 +25,11 @@ const element = React.createElement(
   'Hello, world!'
 );
 ```
-[react hello world](https://facebook.github.io/react/docs/hello-world.html)
-[introducing JSX](https://facebook.github.io/react/docs/introducing-jsx.html)
-[rendering elements](https://facebook.github.io/react/docs/rendering-elements.html)
-[sass](https://sass-lang.com/)
-[sassmeister](http://www.sassmeister.com/)
-[sass cheatsheet](https://devhints.io/sass)
-[react cheatsheet](react cheatsheet)
-[another react cheatsheet](another react cheatsheet)
+- [react hello world](https://facebook.github.io/react/docs/hello-world.html)
+- [introducing JSX](https://facebook.github.io/react/docs/introducing-jsx.html)
+- [rendering elements](https://facebook.github.io/react/docs/rendering-elements.html)
+- [sass](https://sass-lang.com/)
+- [sassmeister](http://www.sassmeister.com/)
+- [sass cheatsheet](https://devhints.io/sass)
+- [react cheatsheet](react cheatsheet)
+- [another react cheatsheet](another react cheatsheet)
