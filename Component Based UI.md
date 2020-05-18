@@ -31,5 +31,5 @@ const element = React.createElement(
 - [sass](https://sass-lang.com/)
 - [sassmeister](http://www.sassmeister.com/)
 - [sass cheatsheet](https://devhints.io/sass)
-- [react cheatsheet](react cheatsheet)
-- [another react cheatsheet](another react cheatsheet)
+- [react cheatsheet](https://devhints.io/react)
+- [another react cheatsheet](https://reactcheatsheet.com/)
