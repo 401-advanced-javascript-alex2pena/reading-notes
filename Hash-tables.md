@@ -25,6 +25,9 @@
 ### Creating a Hash
 - Made from an array. 
 - After array creation turn the “key” into a numeric number value
+- Each Index contains “buckets”. 
+- Each “bucket” holds one key/value pair. 
+- The hashtable starts empty and overwrites the value once a key generates a hashCode
 ---
 > Add or multiply all the ASCII values together.
 > Multiply it by a prime number such as 599.
@@ -47,50 +50,30 @@ Value = "Josie"
 > We can view into this index and find “Josie”, our value quickly.
 ---
 
-Each index of the array can hold many types of values. The trick is how the values are stored in comparison to efficiency. Each Index of the array contain “buckets”. Each of these “buckets” holds one key/value pair combination. When there is no entry in a specific bucket, the buckets (each index of the array) all start null. The hash table starts each bucket empty and overwrites their value once a key generates a hashCode that corresponds with an index.
+### Collisions
+- Occurs when another key hashes to the same index. 
+- A “perfect hash” will never have any collisions. 
+- The hash map nmust handle two keys resolving to the same index.
+- Collisions are solved by initializing a LinkedList.
 
-Collisions
-A collision occurs when more than one key hashes to the same index in an array. As mentioned earlier, a “perfect hash” will never have any collisions. To put this into perspective, the worst possible hash is one that hashes every single key to the same exact index of an array. The more keys you have hashed to a specific index, the more key/value pair combos you can potentially have.
+**Hash maps do this to store values:
 
-What would happen if two different keys resolved to be the same index of the array? This is called a collision. The hash map needs to be able to handle two keys resolving to the same index.
+1. accept a key
+1. calculate the hash of the key
+1. use modulus to convert the hash into an array index
+1. store the key with the value by appending both to the end of a linked list
 
-If two keys ever ultimately resolved to the same index, then two calls to .Add(key, val) with different keys would overwrite each other.
+**Hash maps do this to read value:
 
-Collisions are solved by changing the initial state of the buckets. Instead of starting them all as null we can initialize a LinkedList in each one! Now if two keys resolve to the same index in the array then their key/value pairs can be stored as a node in a linked list. Each index in the array is called a “bucket” because it can store multiple key/value pairs.
+1. accept a key
+1. calculate the hash of the key
+1. use modulus to convert the hash into an array index
+1. use the array index to access the short LinkedList representing a bucket
+1. search through the bucket looking for a node with a key/value pair that matches the key you were given
 
-Since different keys can lead to the same bucket it’s important to store the entire key/value pair in the bucket, not just the value. The key must be stored with the value! If only values were stored in buckets then it would be impossible to determine which value to return when a key led you to a bucket.
-
-This is similar to the original neighborhood names stored in an array with their zip codes shown earlier.
-
-Here’s an actual example of just one bucket in a real hash map. In this example the two different keys "Pioneer Square" and "Alki Beach" happen to ultimately resolve to the same bucket. When we look at the bucket we see a representation of the Linked List that exists there. Pioneer Square was added first, so it’s at the front of the list. Then there’s Alki Beach as the second element in the linked list. Notice that both of them store the entire key/value pair.
-
-hashMap.Add("Pioneer Square", 98104);
-hashMap.Add("Alki Beach", 98116);
-Bucket 92: [{Pioneer Square: 98104} --> {Alki Beach: 98116}]
-If we didn’t store the key, the bucket would look like this. Accessing .get("Pioneer Square") or .get("Alki Beach") would hash the keys and still lead to bucket 92, but it would be impossible to tell which of the zip code values there to return.
-
-Bucket 92: [{98104} --> {98116}]
-Hash maps do this to store values:
-
-accept a key
-calculate the hash of the key
-use modulus to convert the hash into an array index
-store the key with the value by appending both to the end of a linked list
-Hash maps do this to read value:
-
-accept a key
-calculate the hash of the key
-use modulus to convert the hash into an array index
-use the array index to access the short LinkedList representing a bucket
-search through the bucket looking for a node with a key/value pair that matches the key you were given
-Hashmap Example:
-Hash Code Examples
-Consider these examples running Seattle neighborhood names as Strings through two different hash functions.
-
-Notice that although "Pioneer Square" and "Alki Beach" have different sum hashes they ultimately resolve to the same bucket index. Their hashes modulo buckets.length (to turn them into legitimate array indexes) are equal and they ultimately collide.
-
-Calculating hashes and indexes by summing the ascii values of each character:
-
+### Hash Code Examples
+**Calculating hashes and indexes by summing the ascii values of each character:**
+```
 SUM HASHED: Pioneer Square = 1379
 SUM HASHED: Alki Beach = 884
 SUM HASHED: U District = 955
@@ -99,8 +82,9 @@ BUCKET SIZE=99
 SUM INDEX: 1379 % 99 = 92
 SUM INDEX:  884 % 99 = 92
 SUM INDEX:  995 % 99 = 64
-Calculating hashes and indexes by multiplying the ascii values of each character:
-
+```
+**Calculating hashes and indexes by multiplying the ascii values of each character:**
+```
 MULT HASHED: Pioneer Square = 599126016
 MULT HASHED: Alki Beach = 1062823936
 MULT HASHED: U District = 578867200
@@ -109,17 +93,21 @@ BUCKET SIZE=99
 MULT INDEX:  599126016 % 99 = 93
 MULT INDEX: 1062823936 % 99 = 31
 MULT INDEX:  578867200 % 99 = 43
-Bucket Sizes
-Hash Maps can have any number of buckets. If a hash map has only a few buckets it will be densely full and have many collisions. If a hash map has more buckets it will be more sparsely populated, there will be less collisions, but there may be a lot of extra empty space.
+```
 
-It’s possible to compute the “load factor” of a hash table. The load factor tells us something about how full the hash table is. A hash table can start with only a few buckets, calculate it’s own load factor, recognize when it gets too full and automatically grow and add more buckets to itself to accommodate more data.
+### Bucket Sizes
+- Hash Maps can have any number of buckets. 
+- If a hash map has only a few buckets it will be densely full and have many collisions.
+- If a hash map has more buckets it will be more sparsely populated, there will be less collisions.
+- The load factor tells us something about how full the hash table is. 
+- Can recognize when too full and automatically add more buckets to accommodate more data.
+---
+### Here’s what the same information looks like in two different hash tables. 
+- The first hash table only has 7 buckets. 
+- The second has 100 buckets.
 
-Recognize: calculating load factors and choosing the optimal number of buckets, and determining the best hash functions is not within the scope of this class. This class intends to introduce you to what a hash table is, how it’s implemented, what hash codes are, how to handle collisions and how to reason generally about what it means for a hash table to be more empty or more full. This class does not intend to calculate theoretical optimal performance limits for how to best balance a Hash Table.
-
-Here’s what the same information looks like in two different hash tables. The first hash table only has 7 buckets. The second has 100 buckets. Notice that even though the second hash table has 100 buckets there are still some collisions. Collisions are ok! We just don’t want every key to hash to the exact same index. That would be literally the worst!
-
-7 buckets:
-
+**7 buckets:**
+```
 Bucket 0: [{Renton: 98055} --> {Capital Hill: 98102} --> {Greenwood: 98103} --> {Greenlake: 98103} --> {Pioneer Square: 98104} --> {University District: 98105} --> {Columbia City: 98118}]
 Bucket 1: [{Bellevue: 98005} --> {Seattle: 98101}]
 Bucket 2: [{Mercer Island: 98040} --> {Alki Beach: 98116} --> {Northgate: 98125}]
@@ -127,8 +115,9 @@ Bucket 3: [{Downtown: 98101} --> {Laurelhurst: 98105} --> {Bainbridge Island: 98
 Bucket 4: [{Kirkland: 98033} --> {Lynnwood: 98037} --> {Ballard: 98107} --> {Queen Anne: 98109} --> {West Seattle: 98116}]
 Bucket 5: [{International District: 98104} --> {Mount Baker:98144}]
 Bucket 6: [{Redmond: 98052} --> {Freemont: 98103} --> {South Lake Union: 98109} --> {Madrona: 98110} --> {Belltown: 98121}]
-100 buckets:
-
+```
+**100 buckets:**
+```
 Bucket 0: []
 Bucket 1: []
 Bucket 2: []
@@ -228,24 +217,25 @@ Bucket 95: []
 Bucket 96: [{Ballard:98107}]
 Bucket 97: []
 Bucket 98: []
-Internal Methods
-Add()
-When adding a new key/value pair to a hashtable:
+```
 
-send the key to the GetHash method.
-Once you determine the index of where it should be placed, go to that index
-Check if something exists at that index already, if it doesn’t, add it with the key/value pair.
-If something does exist, add the new key/value pair to the data structure within that bucket.
-Find()
-The Find takes in a key, gets the Hash, and goes to the index location specified. Once at the index location is found in the array, it is then the responsibility of the algorithm the iterate through the bucket and see if the key exists and return the value.
+### Internal Methods
+**Add()**
 
-Contains()
-The Contains method will accept a key, and return a bool on if that key exists inside the hashtable. The best way to do this is to have the contains call the GetHash and check the hashtable if the key exists in the table given the index returned.
+1. send the key to the GetHash method.
+1. go to the index of where it should be placed, 
+1. Check if something exists at that index already, if it doesn’t, add it with the key/value pair.
+1. If something does exist, add the new key/value pair to the data structure within that bucket.
 
-GetHash()
-The GetHash will accept a key as a string, conduct the hash, and then return the index of the array where the key/value should be placed.
+**Find()**
+- The Find takes in a key, gets the Hash, and goes to the index location specified. 
+- Once at the index location is found in the array, it is then the responsibility of the algorithm the iterate through the bucket and see if the key exists and return the value.
 
+**Contains()**
+The Contains method will accept a key, and return a bool on if that key exists inside the hashtable. 
+The best way to do this is to have the contains call the GetHash and check the hashtable if the key exists in the table given the index returned.
+
+**GetHash()**
+- The GetHash will accept a key as a string, conduct the hash, and then return the index of the array where the key/value should be placed.
 
 ---
-
-https://www.hackerearth.com/practice/data-structures/hash-tables/basics-of-hash-tables/tutorial/
