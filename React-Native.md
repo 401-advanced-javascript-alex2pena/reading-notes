@@ -1,8 +1,9 @@
 # React Native
-
-- React Native Ecosystem
+**React Native Ecosystem**
 - What is native development?
+  - Using native machine code to run apps connected directtly to hardware and OS features
 - Why is it important to develop a native app vs a responsive react app?
+  - Does not rely on 3rd party software to run so performance and quality are preserved
 - It’s still just state and components
 - But no HTML or CSS
 - You can still “style” things using the framework guidelines
